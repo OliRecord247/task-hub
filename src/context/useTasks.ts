@@ -12,6 +12,7 @@ export type Task = {
 
 type Context = {
     tasks: Task[],
+    updateTaskStatus: (id:number, status: Status) => void
 }
 
 export const TaskContext = createContext<null | Context>(null);
