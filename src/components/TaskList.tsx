@@ -1,6 +1,9 @@
+import { format, formatISO } from "date-fns"
 import { twMerge } from "tailwind-merge";
 import { useDraggable, useDroppable } from "@dnd-kit/react";
 import { closestCenter } from "@dnd-kit/collision"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 import { useTasks, type Status, type Task } from "../context/useTasks";
 import { Button } from "./Button";
@@ -48,17 +51,19 @@ function TaskListItem({ task }: TaskListItemProps) {
     return (
         <div
             ref={ref}
-            className="flex justify-between rounded-lg bg-blue-900/20 border border-blue-900/40 px-4 py-3 shadow-sm hover:border-blue-800/60 transition-colors">
+            className="cursor-pointer flex items-center justify-between rounded-lg bg-blue-900/20 border border-blue-900/40 px-4 py-3 shadow-sm hover:border-blue-800/60 transition-colors">
             <div className="flex flex-col gap-1 ">
                 <h3 className="font-medium text-zinc-200 text-sm">{task.name}</h3>
                 <div className="text-xs text-zinc-500 flex gap-1">
-                    Create:
-                    <time dateTime={task.createdAt.toISOString()}>
-                        {task.createdAt.toLocaleDateString()}
+                    Created:
+                    <time dateTime={formatISO(task.createdAt)}>
+                        {format(task.createdAt, "dd/MM/yyyy hh:mm")}
                     </time>
                 </div>
             </div>
-            <Button onClick={() => deleteTask(task.id)}>Delete</Button>
+            <Button variant="danger" className="text-xs p-1.5 rounded-full" onClick={() => deleteTask(task.id)}>
+                <FontAwesomeIcon icon={faTrash} />
+            </Button>
         </div>
     )
 }
