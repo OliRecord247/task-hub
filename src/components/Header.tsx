@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faChartSimple } from "@fortawesome/free-solid-svg-icons";
 import { useTasks } from "../context/useTasks";
 import { Button } from "./Button";
 import { TaskForm } from "./TaskForm";
@@ -27,12 +29,12 @@ export function Header() {
                 <div className="flex items-center gap-1.5">
                     <Button 
                         onClick={() => setIsFormOpen(true)}
-                        className="bg-blue-900/40 border border-blue-800/60 hover:bg-blue-900/80 text-zinc-200 text-xs px-3 py-1.5 rounded-lg transition-colors"
+                        className="text-xs px-3 py-1.5 rounded-lg"
                     >
-                        Add
+                        <FontAwesomeIcon icon={faPlus} /> Add
                     </Button>
-                    <Button className="bg-blue-900/40 border border-blue-800/60 hover:bg-blue-900/80 text-zinc-200 text-xs px-3 py-1.5 rounded-lg transition-colors">
-                        Next
+                    <Button variant="secondary" className="text-xs px-3 py-1.5 rounded-lg">
+                        <FontAwesomeIcon icon={faChartSimple} />
                     </Button>
                 </div>
             </div>
