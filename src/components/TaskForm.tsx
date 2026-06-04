@@ -53,7 +53,6 @@ export function TaskForm({ isOpen, onClose }: TaskFromProps) {
 
     function handleSubmit(event: SubmitEvent) {
         event.preventDefault()
-        console.log(event)
         if (name.trim() === "") return
         addTask(name)
         setName("")
