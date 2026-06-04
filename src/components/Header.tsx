@@ -4,9 +4,11 @@ import { faPlus, faChartSimple } from "@fortawesome/free-solid-svg-icons";
 import { useTasks } from "../context/useTasks";
 import { Button } from "./Button";
 import { TaskForm } from "./TaskForm";
+import { StatisticsDialog } from "./StatisticsDialog";
 
 export function Header() {
     const [isFormOpen, setIsFormOpen] = useState(false);
+    const [isStatisticsOpen, setStatisticsOpen] = useState(false);
     const { tasks } = useTasks();
 
     const finishedCount = tasks.filter(task => task.status === "closed").length;
@@ -33,13 +35,18 @@ export function Header() {
                     >
                         <FontAwesomeIcon icon={faPlus} /> Add
                     </Button>
-                    <Button variant="secondary" className="text-xs px-3 py-1.5 rounded-lg">
+                    <Button 
+                        variant="secondary" 
+                        className="text-xs px-3 py-1.5 rounded-lg"
+                        onClick={() => setStatisticsOpen(true)}
+                    >
                         <FontAwesomeIcon icon={faChartSimple} />
                     </Button>
                 </div>
             </div>
 
             <TaskForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
+            <StatisticsDialog isOpen={isStatisticsOpen} onClose={() => setStatisticsOpen(false)} />
         </header>
     )
 }
