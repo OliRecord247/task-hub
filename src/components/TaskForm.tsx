@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState, type SubmitEvent } from "react";
+import { createPortal } from "react-dom";
 import { useTasks } from "../context/useTasks";
+import { Button } from "./Button";
 
 type TaskFromProps = { 
     isOpen: boolean
@@ -63,8 +65,9 @@ export function TaskForm({ isOpen, onClose }: TaskFromProps) {
         onClose()
     }
 
-    return (
-        <dialog
+    return createPortal(
+        (
+            <dialog
             ref={dialogRef}
             onClose={handleClose}
             className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 backdrop:bg-black/60 backdrop:backdrop-blur-sm bg-blue-950/80 border border-blue-900/60 text-zinc-100 p-6 rounded-2xl max-w-md w-full shadow-2xl shadow-black/80">
@@ -84,21 +87,24 @@ export function TaskForm({ isOpen, onClose }: TaskFromProps) {
                 />
 
                 <div className="flex items-center justify-end gap-2 mt-2">
-                    <button
+                    <Button
+                        variant="secondary"
                         type="button"
                         onClick={handleClose}
-                        className="text-zinc-400 hover:text-zinc-200 text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+                        className="text-sm font-medium px-4 py-2 rounded-lg"
                     >
                         Cancel
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                         type="submit"
-                        className="bg-blue-900/40 border border-blue-800/60 hover:bg-blue-900/80 text-zinc-100 font-semibold text-sm px-5 py-2 rounded-lg shadow-md shadow-black/20 hover:border-blue-500/30 transition-all"
+                        className="text-sm font-semibold px-5 py-2 rounded-lg"
                     >
                         Create Task
-                    </button>
+                    </Button>
                 </div>
             </form>
         </dialog>
+        ),
+        document.body
     )
 }
