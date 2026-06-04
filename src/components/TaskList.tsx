@@ -21,6 +21,21 @@ export function TaskList({ name, status }: TaskListProps) {
     })
     const visibleTasks = tasks.filter(task => task.status === status)
 
+    if (visibleTasks.length === 0) {
+        return (
+            <div 
+                ref={ref}
+                className={twMerge(
+                    "flex justify-center rounded-xl py-4",
+                    "bg-blue-950/40 backdrop-blur-sm border-2",
+                    getStatustyling(status),
+                )}
+            >
+                <p className="text-zinc-200 text-md font-bold">No more tasks available</p>
+            </div>
+        )
+    }
+
     return (
         <div
             ref={ref}
