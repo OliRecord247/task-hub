@@ -1,6 +1,7 @@
-import { useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { TaskContext, type Status, type Task } from "./useTasks";
 import { DragDropProvider, type DragEndEvent } from "@dnd-kit/react";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 
 type HabitProviderProps = {
@@ -8,11 +9,11 @@ type HabitProviderProps = {
 }
 
 export function TaskProvider({ children }: HabitProviderProps) {
-    const [tasks, setTasks] = useState<Task[]>([
-        { id: "1", name: "Open task", createdAt: new Date(), status: "open" },
-        { id: "2", name: "Closed task", createdAt: new Date(), status: "closed" },
-        { id: "3", name: "In progress task", createdAt: new Date(), status: "progress" },
-        { id: "4", name: "Second task", createdAt: new Date(), status: "progress" },
+    const [tasks, setTasks] = useLocalStorage<Task[]>("tasks", [
+        { id: crypto.randomUUID(), name: "First task", createdAt: new Date(), status: "open" },
+        { id: crypto.randomUUID(), name: "Second task", createdAt: new Date(), status: "closed" },
+        { id: crypto.randomUUID(), name: "Thrid task", createdAt: new Date(), status: "progress" },
+        { id: crypto.randomUUID(), name: "Fourth task", createdAt: new Date(), status: "progress" },
     ])
 
     function addTask(name: string) {
