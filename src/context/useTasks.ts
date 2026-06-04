@@ -13,6 +13,7 @@ export type Task = {
 type Context = {
     tasks: Task[],
     addTask: (name: string) => void,
+    deleteTask: (id: string) => void,
     updateTaskStatus: (id: string, status: Status) => void
 }
 

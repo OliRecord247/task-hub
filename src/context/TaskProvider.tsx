@@ -21,6 +21,10 @@ export function TaskProvider({ children }: HabitProviderProps) {
         }]);
     }
 
+    function deleteTask(id: string) {
+        setTasks(curr => curr.filter(h => h.id !== id))
+    }
+
     function updateTaskStatus(id: string, status: Status) {
         setTasks(curr => {
             const index = curr.findIndex(task => task.id === id)
@@ -43,7 +47,7 @@ export function TaskProvider({ children }: HabitProviderProps) {
 
     return (
         <DragDropProvider onDragEnd={handleDragEnd}>
-            <TaskContext value={{ tasks, addTask, updateTaskStatus }}>
+            <TaskContext value={{ tasks, addTask, deleteTask, updateTaskStatus }}>
                 {children}
             </TaskContext>
         </DragDropProvider>

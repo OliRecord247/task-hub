@@ -42,7 +42,9 @@ export function TaskList({ name, status }: TaskListProps) {
 type TaskListItemProps = { task: Task };
 
 function TaskListItem({ task }: TaskListItemProps) {
+    const { deleteTask } = useTasks();
     const { ref } = useDraggable({ id: task.id });
+
     return (
         <div
             ref={ref}
@@ -56,7 +58,7 @@ function TaskListItem({ task }: TaskListItemProps) {
                     </time>
                 </div>
             </div>
-            <Button>Delete</Button>
+            <Button onClick={() => deleteTask(task.id)}>Delete</Button>
         </div>
     )
 }
