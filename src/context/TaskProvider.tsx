@@ -9,13 +9,19 @@ type HabitProviderProps = {
 
 export function TaskProvider({ children }: HabitProviderProps) {
     const [tasks, setTasks] = useState<Task[]>([
-        { id: 1, name: "Open task", createdAt: new Date(), status: "open" },
-        { id: 2, name: "Closed task", createdAt: new Date(), status: "closed" },
-        { id: 3, name: "In progress task", createdAt: new Date(), status: "progress" },
-        { id: 4, name: "Second task", createdAt: new Date(), status: "progress" },
+        { id: "1", name: "Open task", createdAt: new Date(), status: "open" },
+        { id: "2", name: "Closed task", createdAt: new Date(), status: "closed" },
+        { id: "3", name: "In progress task", createdAt: new Date(), status: "progress" },
+        { id: "4", name: "Second task", createdAt: new Date(), status: "progress" },
     ])
 
-    function updateTaskStatus(id: number, status: Status) {
+    function addTask(name: string) {
+        setTasks(curr => [...curr, { 
+            id: crypto.randomUUID(), name, createdAt: new Date(), status: "open" 
+        }]);
+    }
+
+    function updateTaskStatus(id: string, status: Status) {
         setTasks(curr => {
             const index = curr.findIndex(task => task.id === id)
             if (index === -1) return curr;
@@ -29,7 +35,7 @@ export function TaskProvider({ children }: HabitProviderProps) {
         if (event.canceled) return;
         if (!event.operation.target) return;
 
-        const taskId = Number(event.operation.source?.id);
+        const taskId = event.operation.source?.id?.toString() ?? "";
         const nextStatus = event.operation.target.id as Status
 
         updateTaskStatus(taskId, nextStatus);
@@ -37,7 +43,7 @@ export function TaskProvider({ children }: HabitProviderProps) {
 
     return (
         <DragDropProvider onDragEnd={handleDragEnd}>
-            <TaskContext value={{ tasks, updateTaskStatus }}>
+            <TaskContext value={{ tasks, addTask, updateTaskStatus }}>
                 {children}
             </TaskContext>
         </DragDropProvider>

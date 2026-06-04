@@ -3,7 +3,7 @@ import { createContext, useContext } from "react"
 export type Status = "open" | "progress" | "closed"
 
 export type Task = {
-  id: number,
+  id: string,
   name: string,
   createdAt: Date,
   status: Status,
@@ -12,7 +12,8 @@ export type Task = {
 
 type Context = {
     tasks: Task[],
-    updateTaskStatus: (id:number, status: Status) => void
+    addTask: (name: string) => void,
+    updateTaskStatus: (id: string, status: Status) => void
 }
 
 export const TaskContext = createContext<null | Context>(null);
