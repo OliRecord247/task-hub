@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react"
 import { createPortal } from "react-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
+import { Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 import { getLatestStatus, useTasks, type Status } from "../context/useTasks";
 import { Button } from "./Button";
 
@@ -80,6 +80,13 @@ export function StatisticsDialog({ isOpen, onClose }: StatisticsDialogProps) {
                                         borderRadius: "8px",
                                         color: "#f4f4f5",
                                     }}
+                                />
+                                <Legend
+                                    verticalAlign="bottom"
+                                    align="center"
+                                    layout="horizontal"
+                                    iconType="circle"
+                                    iconSize={10}
                                 />
                             </PieChart>
                         </ResponsiveContainer>
