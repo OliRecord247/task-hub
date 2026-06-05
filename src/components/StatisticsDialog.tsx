@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
-import { useTasks } from "../context/useTasks";
+import { useTasks, type Status } from "../context/useTasks";
 import { Button } from "./Button";
 
 type StatisticsDialogProps = {
@@ -11,15 +11,31 @@ type StatisticsDialogProps = {
     onClose: () => void
 }
 
+const statusses: Status[] = ["open", "closed", "progress"]
+const colors: Record<Status, string> = {
+    open: "rgba(16, 185, 129, 0.6)",
+    progress: "rgba(245, 158, 11, 0.6)",
+    closed: "rgba(59, 130, 246, 0.6)"
+}
+const labels: Record<Status, string> = {
+    open: "Open",
+    closed: "Closed",
+    progress: "In progress"
+}
+
 export function StatisticsDialog({ isOpen, onClose }: StatisticsDialogProps) {
     const { tasks } = useTasks();
     const dialogRef = useRef<HTMLDialogElement>(null)
 
-    const data = [
-        { name: "Open", value: tasks.filter(t => t.status === "open").length, color: "rgba(16, 185, 129, 0.6)" },
-        { name: "In Progress", value: tasks.filter(t => t.status === "progress").length, color: "rgba(245, 158, 11, 0.6)" }, 
-        { name: "Closed", value: tasks.filter(t => t.status === "closed").length, color: "rgba(59, 130, 246, 0.6)" },
-    ];
+    const data = statusses.map(status => {
+        const amount = tasks.filter(t => t.status === status).length;
+        return ({
+            name: labels[status],
+            fill: colors[status],
+            amt: amount,
+            value: Number((amount / tasks.length * 100).toFixed(2)),
+        })
+    });
 
     useEffect(() => {
         const dialog = dialogRef.current;
@@ -55,9 +71,6 @@ export function StatisticsDialog({ isOpen, onClose }: StatisticsDialogProps) {
                                     data={data}
                                     cx="50%"
                                     cy="50%"
-                                    innerRadius={60}
-                                    outerRadius={80}
-                                    paddingAngle={5}
                                     dataKey="value"
                                 />
                                 <Tooltip
