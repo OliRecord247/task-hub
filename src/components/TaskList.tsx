@@ -7,6 +7,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 import { getLatestStatus, useTasks, type Status, type Task } from "../context/useTasks";
 import { Button } from "./Button";
+import type { ComponentProps } from "react";
 
 type TaskListProps = {
     name: string,
@@ -26,11 +27,12 @@ export function TaskList({ name, status }: TaskListProps) {
             <div
                 ref={ref}
                 className={twMerge(
-                    "flex justify-center rounded-xl py-4",
+                    "flex flex-col gap-3 items-center rounded-xl p-4",
                     "bg-blue-950/40 backdrop-blur-sm border-2",
                     getStatustyling(status),
                 )}
             >
+                <TaskListHeader  name={name} amount={visibleTasks.length} className="self-start" />
                 <p className="text-zinc-200 text-md font-bold">No more tasks available</p>
             </div>
         )
@@ -45,9 +47,7 @@ export function TaskList({ name, status }: TaskListProps) {
                 getStatustyling(status),
             )}
         >
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-zinc-400 px-1">
-                {name} ({visibleTasks.length})
-            </h2>
+            <TaskListHeader  name={name} amount={visibleTasks.length} />
             <div className="flex flex-col gap-2">
                 {visibleTasks.map(task => (
                     <TaskListItem key={task.id} task={task} />
@@ -55,6 +55,18 @@ export function TaskList({ name, status }: TaskListProps) {
             </div>
         </div>
     );
+}
+
+type TaskListHeaderProps = { name: string, amount: number } & ComponentProps<"h2">;
+function TaskListHeader({ name, amount, ...props }: TaskListHeaderProps) {
+    return (
+        <h2 {...props} className={twMerge(
+            "text-sm font-semibold uppercase tracking-wider text-zinc-400 px-1",
+            props.className
+        )}>
+            {name} ({amount})
+        </h2>
+    )
 }
 
 type TaskListItemProps = { task: Task };
