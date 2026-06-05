@@ -1,5 +1,5 @@
 import { type ReactNode } from "react";
-import { TaskContext, type Status, type Task } from "./useTasks";
+import { TaskContext, type Task, type Status } from "./useTasks";
 import { DragDropProvider, type DragEndEvent } from "@dnd-kit/react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 
@@ -9,16 +9,13 @@ type HabitProviderProps = {
 }
 
 export function TaskProvider({ children }: HabitProviderProps) {
-    const [tasks, setTasks] = useLocalStorage<Task[]>("tasks", [
-        { id: crypto.randomUUID(), name: "First task", createdAt: new Date(), status: "open" },
-        { id: crypto.randomUUID(), name: "Second task", createdAt: new Date(), status: "closed" },
-        { id: crypto.randomUUID(), name: "Thrid task", createdAt: new Date(), status: "progress" },
-        { id: crypto.randomUUID(), name: "Fourth task", createdAt: new Date(), status: "progress" },
-    ])
+    const [tasks, setTasks] = useLocalStorage<Task[]>("tasks", [])
 
     function addTask(name: string) {
-        setTasks(curr => [...curr, { 
-            id: crypto.randomUUID(), name, createdAt: new Date(), status: "open" 
+        setTasks(curr => [...curr, {
+            id: crypto.randomUUID(),
+            name, createdAt: new Date(), 
+            history: [{ status: "open", date: new Date() }],
         }]);
     }
 
@@ -31,8 +28,9 @@ export function TaskProvider({ children }: HabitProviderProps) {
             const index = curr.findIndex(task => task.id === id)
             if (index === -1) return curr;
 
-            const task = { ...curr[index], status }
-            return curr.toSpliced(index, 1, task)
+            const updateTask = curr[index];
+            updateTask.history = [...updateTask.history, { status, date: new Date() }]
+            return curr.toSpliced(index, 1, updateTask)
         })
     }
 

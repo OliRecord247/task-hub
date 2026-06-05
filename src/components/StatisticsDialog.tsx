@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
-import { useTasks, type Status } from "../context/useTasks";
+import { getLatestStatus, useTasks, type Status } from "../context/useTasks";
 import { Button } from "./Button";
 
 type StatisticsDialogProps = {
@@ -28,7 +28,7 @@ export function StatisticsDialog({ isOpen, onClose }: StatisticsDialogProps) {
     const dialogRef = useRef<HTMLDialogElement>(null)
 
     const data = statusses.map(status => {
-        const amount = tasks.filter(t => t.status === status).length;
+        const amount = tasks.filter(t => getLatestStatus(t) === status).length;
         return ({
             name: labels[status],
             fill: colors[status],

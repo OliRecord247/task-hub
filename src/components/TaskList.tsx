@@ -5,7 +5,7 @@ import { closestCenter } from "@dnd-kit/collision"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
-import { useTasks, type Status, type Task } from "../context/useTasks";
+import { getLatestStatus, useTasks, type Status, type Task } from "../context/useTasks";
 import { Button } from "./Button";
 
 type TaskListProps = {
@@ -19,11 +19,11 @@ export function TaskList({ name, status }: TaskListProps) {
         id: status.toString(),
         collisionDetector: closestCenter
     })
-    const visibleTasks = tasks.filter(task => task.status === status)
+    const visibleTasks = tasks.filter(task => getLatestStatus(task) === status)
 
     if (visibleTasks.length === 0) {
         return (
-            <div 
+            <div
                 ref={ref}
                 className={twMerge(
                     "flex justify-center rounded-xl py-4",

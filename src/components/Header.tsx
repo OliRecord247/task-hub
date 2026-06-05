@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faChartSimple } from "@fortawesome/free-solid-svg-icons";
-import { useTasks } from "../context/useTasks";
+import { useTasks, getLatestStatus } from "../context/useTasks";
 import { Button } from "./Button";
 import { TaskForm } from "./TaskForm";
 import { StatisticsDialog } from "./StatisticsDialog";
@@ -11,7 +11,7 @@ export function Header() {
     const [isStatisticsOpen, setStatisticsOpen] = useState(false);
     const { tasks } = useTasks();
 
-    const finishedCount = tasks.filter(task => task.status === "closed").length;
+    const finishedCount = tasks.filter(task => getLatestStatus(task) === "closed").length;
     
     return (
         <header className="flex items-center justify-between border-b-2 border-blue-900 pb-6 mb-6">
